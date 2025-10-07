@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico: Projeto de Detecção de Fraude</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        .bar-chart-container {
+             position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 500px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flow-arrow {
+            color: #003F5C;
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center py-12">
+            <h1 class="text-4xl md:text-6xl font-black text-[#003F5C] uppercase tracking-wide">Detecção de Fraude</h1>
+            <p class="text-lg md:text-xl text-gray-600 mt-4 max-w-3xl mx-auto">Um infográfico sobre a construção de um modelo de Machine Learning de alta performance para identificar transações fraudulentas.</p>
+        </header>
+
+        <section id="challenge" class="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="text-center md:text-left">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#58508D]">O Desafio: A Agulha no Palheiro</h2>
+                    <p class="mt-4 text-gray-600 leading-relaxed">O principal desafio em qualquer projeto de fraude é o extremo desbalanceamento dos dados. Eventos fraudulentos são, por natureza, raros. Em nosso dataset de 1 milhão de transações, as fraudes representam uma pequena fração, tornando difícil para um modelo aprender a identificá-las sem ser treinado especificamente para essa tarefa. O risco é criar um modelo que, para maximizar a acurácia, simplesmente classifica tudo como "normal".</p>
+                </div>
+                <div>
+                    <div class="chart-container">
+                        <canvas id="classDistributionChart"></canvas>
+                    </div>
+                     <p class="text-center text-sm text-gray-500 mt-4">Visualização da proporção de transações normais vs. fraudulentas no dataset.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="methodology" class="py-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#BC5090] mb-12">Nossa Metodologia de Ponta a Ponta</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                
+                <div class="flex flex-col items-center">
+                    <div class="bg-white rounded-2xl shadow-lg p-6 flex-grow w-full flex flex-col justify-center items-center hover:shadow-2xl transition-shadow duration-300">
+                        <span class="text-4xl mb-4">📊</span>
+                        <h3 class="text-xl font-bold text-[#003F5C]">1. Análise (EDA)</h3>
+                        <p class="text-gray-600 mt-2">Iniciamos com uma imersão nos dados para entender a estrutura, a distribuição de cada variável e, crucialmente, o nível de desbalanceamento entre as classes.</p>
+                    </div>
+                    <div class="flow-arrow mt-4 hidden md:block">↓</div>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="bg-white rounded-2xl shadow-lg p-6 flex-grow w-full flex flex-col justify-center items-center hover:shadow-2xl transition-shadow duration-300">
+                        <span class="text-4xl mb-4">⚙️</span>
+                        <h3 class="text-xl font-bold text-[#003F5C]">2. Pré-processamento</h3>
+                        <p class="text-gray-600 mt-2">Utilizamos um `Pipeline` com `ColumnTransformer` para escalonar features numéricas, garantindo que todas tivessem a mesma importância inicial para o modelo.</p>
+                    </div>
+                     <div class="flow-arrow mt-4 hidden md:block">↓</div>
+                </div>
+
+                <div class="flex flex-col items-center">
+                     <div class="bg-white rounded-2xl shadow-lg p-6 flex-grow w-full flex flex-col justify-center items-center hover:shadow-2xl transition-shadow duration-300">
+                        <span class="text-4xl mb-4">🧠</span>
+                        <h3 class="text-xl font-bold text-[#003F5C]">3. Modelagem</h3>
+                        <p class="text-gray-600 mt-2">Escolhemos o LightGBM e ajustamos o `scale_pos_weight` para penalizar mais os erros em fraudes, ensinando o modelo a focar na classe minoritária.</p>
+                    </div>
+                     <div class="flow-arrow mt-4 hidden md:block">↓</div>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="bg-white rounded-2xl shadow-lg p-6 flex-grow w-full flex flex-col justify-center items-center hover:shadow-2xl transition-shadow duration-300">
+                        <span class="text-4xl mb-4">🔬</span>
+                        <h3 class="text-xl font-bold text-[#003F5C]">4. Validação Robusta</h3>
+                        <p class="text-gray-600 mt-2">Aplicamos Validação Cruzada (`StratifiedKFold`) para obter uma média de performance estável, eliminando o fator sorte na divisão dos dados.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="insights" class="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                 <div>
+                    <div class="bar-chart-container">
+                        <canvas id="featureImportanceChart"></canvas>
+                    </div>
+                     <p class="text-center text-sm text-gray-500 mt-4">Ranking de importância das features para o modelo.</p>
+                </div>
+                <div class="text-center md:text-left">
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#58508D]">Como o Modelo Pensa?</h2>
+                    <p class="mt-4 text-gray-600 leading-relaxed">Um bom modelo não é uma caixa preta. Analisamos quais "pistas" ou features foram mais importantes para suas decisões. Fatores como a **proporção do valor da compra em relação à média** e a **distância da última transação** foram os indicadores mais fortes, mostrando que transações com valores atípicos e em locais incomuns são altamente suspeitas.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="results" class="bg-gray-800 text-white rounded-2xl shadow-xl p-8 md:p-12 my-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-12">Resultados Validados: Próximo da Perfeição</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                
+                <div class="text-center p-6 bg-gray-700 rounded-lg">
+                    <h3 class="text-2xl font-semibold text-gray-300">Recall (Revocação)</h3>
+                    <p class="text-6xl font-black text-[#58508D] my-4">99.94%</p>
+                    <p class="text-gray-400">Das fraudes que realmente ocorreram, nosso modelo conseguiu identificar praticamente todas. Essencial para minimizar perdas financeiras.</p>
+                </div>
+                
+                <div class="text-center p-6 bg-gray-700 rounded-lg">
+                    <h3 class="text-2xl font-semibold text-gray-300">Precisão</h3>
+                    <p class="text-6xl font-black text-[#BC5090] my-4">97.89%</p>
+                    <p class="text-gray-400">Quando o modelo alertou sobre uma fraude, ele estava certo quase 98% das vezes, minimizando o impacto em clientes legítimos.</p>
+                </div>
+
+                <div class="text-center p-6 bg-gray-700 rounded-lg">
+                    <h3 class="text-2xl font-semibold text-gray-300">ROC AUC Score</h3>
+                    <p class="text-6xl font-black text-[#FFA600] my-4">1.0000</p>
+                    <p class="text-gray-400">O modelo demonstrou uma capacidade perfeita de distinguir entre transações normais e fraudulentas, acertando com máxima confiança.</p>
+                </div>
+            </div>
+            
+            <div class="mt-12">
+                <h3 class="text-2xl font-bold text-center text-white mb-6">Matriz de Confusão (Exemplo da Última Dobra)</h3>
+                <div class="max-w-md mx-auto bg-gray-700 rounded-lg p-4 text-center">
+                    <div class="grid grid-cols-3 gap-2 items-center">
+                        <div class="font-bold"></div>
+                        <div class="font-bold text-gray-300">Previsto: Normal</div>
+                        <div class="font-bold text-gray-300">Previsto: Fraude</div>
+                        
+                        <div class="font-bold text-gray-300 self-center transform -rotate-90">Real</div>
+                        
+                        <div class="grid grid-rows-2 gap-2 w-full h-full">
+                           <div class="font-bold text-gray-300 self-end">Normal</div>
+                           <div class="font-bold text-gray-300 self-start">Fraude</div>
+                        </div>
+
+                        <div class="grid grid-rows-2 gap-2 text-2xl font-bold">
+                            <div class="bg-green-500/20 text-green-300 p-4 rounded-lg flex items-center justify-center">182522</div>
+                            <div class="bg-red-500/20 text-red-300 p-4 rounded-lg flex items-center justify-center">7</div>
+                        </div>
+                        <div class="grid grid-rows-2 gap-2 text-2xl font-bold">
+                             <div class="bg-orange-500/20 text-orange-300 p-4 rounded-lg flex items-center justify-center">384</div>
+                             <div class="bg-green-500/20 text-green-300 p-4 rounded-lg flex items-center justify-center">17087</div>
+                        </div>
+                    </div>
+                     <p class="text-sm text-gray-400 mt-4">A matriz ilustra os acertos (verde) e os erros (laranja/vermelho). Vemos um número altíssimo de acertos e um número ínfimo de erros, validando o Recall e a Precisão.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center py-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#003F5C]">Conclusão: Metodologia é a Chave</h2>
+            <p class="text-lg text-gray-600 mt-4 max-w-3xl mx-auto leading-relaxed">Embora o desempenho perfeito seja um indicativo de um dataset sintético de alta qualidade, a metodologia empregada – `Pipeline`, tratamento de desbalanceamento e validação robusta – é o padrão-ouro da indústria e garante a criação de modelos de alto impacto e confiáveis para o negócio.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const chartTooltipCallback = {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                    return label.join(' ');
+                                } else {
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            
+            const brilliantBlues = ['#003F5C', '#FFA600'];
+            const brilliantBluesReversed = ['#FFA600', '#003F5C'];
+
+            new Chart(document.getElementById('classDistributionChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Transações Normais (91.26%)', 'Fraudes (8.74%)'],
+                    datasets: [{
+                        data: [91.26, 8.74],
+                        backgroundColor: brilliantBlues,
+                        borderColor: '#FFFFFF',
+                        borderWidth: 4,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 14,
+                                    family: 'Inter'
+                                }
+                            }
+                        },
+                        ...chartTooltipCallback.plugins
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('featureImportanceChart'), {
+                type: 'bar',
+                data: {
+                    labels: [
+                        'Proporção do Preço à Mediana', 
+                        'Distância da Última Transação', 
+                        'Distância de Casa',
+                        'Pedido Online',
+                        'Uso de Chip',
+                        'Uso de PIN',
+                        'Mesmo Varejista'
+                        ],
+                    datasets: [{
+                        label: 'Importância da Feature',
+                        data: [1850, 1600, 1200, 450, 300, 250, 100],
+                        backgroundColor: '#58508D',
+                        borderColor: '#3a345c',
+                        borderWidth: 2,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                     scales: {
+                        x: {
+                            beginAtZero: true,
+                             grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                font: {
+                                    family: 'Inter'
+                                }
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                font: {
+                                    family: 'Inter'
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                           display: false
+                        },
+                        ...chartTooltipCallback.plugins
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
+
