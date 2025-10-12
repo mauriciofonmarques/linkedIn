@@ -1,7 +1,7 @@
 Projeto de Detecção de Fraude em Cartões de Crédito
 
 1. Visão Geral e Objetivo
-Este projeto demonstra a construção de um modelo de Machine Learning de alta performance para a detecção de transações fraudulentas em cartões de crédito. O objetivo principal foi desenvolver uma solução robusta, aplicando as melhores práticas da indústria para lidar com dados tabulares e, principalmente, com o desafio do extremo desbalanceamento de classes, uma característica intrínseca a problemas de fraude.
+Este projeto demonstra a construção de um modelo de Machine Learning para a detecção de transações fraudulentas em cartões de crédito. O objetivo principal foi desenvolver uma solução robusta, aplicando as melhores práticas da indústria para lidar com dados tabulares e, principalmente, com o desafio do extremo desbalanceamento de classes, uma característica intrínseca a problemas de fraude.
 
 O dataset utilizado foi o "Credit Card Fraud", disponível no Kaggle. A grande vantagem desta base de dados é a sua interpretabilidade, com features claras como distance_from_home e online_order, permitindo uma análise mais conectada ao negócio.
 
@@ -72,3 +72,4 @@ O modelo demonstrou uma capacidade ótima de distinguir entre uma transação no
 Conclusão Final
 Este projeto demonstrou com sucesso a construção de um sistema de detecção de fraudes de ponta a ponta. Embora o desempenho perfeito seja um indicativo de que o dataset é sintético (em um cenário real, os resultados seriam menores), a metodologia empregada é utilizada na indústria.
 O uso de um Pipeline organizado, o tratamento correto do desbalanceamento de classes com scale_pos_weight e a validação robusta com StratifiedKFold são as técnicas que garantem a criação de um modelo confiável e de alto impacto para o negócio.
+
